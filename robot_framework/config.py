@@ -7,3 +7,7 @@ MAX_RETRY_COUNT = 3
 SMTP_SERVER = "smtp.aarhuskommune.local"
 SMTP_PORT = 25
 SCREENSHOT_SENDER = "robot@friend.dk"
+
+# Constant names
+ERROR_EMAIL = "Error Email"
+SAP_CREDENTIAL = "Mathias SAP"
