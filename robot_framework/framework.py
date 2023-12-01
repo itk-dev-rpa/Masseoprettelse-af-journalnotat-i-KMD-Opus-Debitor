@@ -43,11 +43,12 @@ def main():
                 # Stop if no more queue elements
                 if len(queue_elements) == 0:
                     orchestrator_connection.log_info("No more queue elements.")
-                    break
+                    break  # TODO: Break outer loop
 
                 process.process(orchestrator_connection, queue_elements)
             else:
                 orchestrator_connection.log_info("Limit reached. Stopping for now.")
+                break
 
         # If any business rules are broken the robot should stop entirely.
         except BusinessError as error:
