@@ -67,6 +67,9 @@ def main():
     reset.close_all(orchestrator_connection)
     reset.kill_all(orchestrator_connection)
 
+    if error_count == config.MAX_RETRY_COUNT:
+        raise RuntimeError("The process failed too many times.")
+
 
 def log_exception(orchestrator_connection: OrchestratorConnection) -> callable:
     """Creates a function to be used as an exception hook that logs any uncaught exception in OpenOrchestrator.
