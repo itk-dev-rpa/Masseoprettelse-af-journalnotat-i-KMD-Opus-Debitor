@@ -34,10 +34,10 @@ def main():
 
                 # Get up to 6 new queue elements
                 for _ in range(config.THREAD_COUNT):
-                    qe = orchestrator_connection.get_next_queue_element(config.QUEUE_NAME)
-                    if qe is None:
+                    queue_element = orchestrator_connection.get_next_queue_element(config.QUEUE_NAME)
+                    if queue_element is None:
                         break
-                    queue_elements.append(qe)
+                    queue_elements.append(queue_element)
                     task_count += 1
 
                 # Stop if no more queue elements
