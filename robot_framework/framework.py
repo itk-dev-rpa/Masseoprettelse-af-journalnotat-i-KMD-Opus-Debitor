@@ -4,6 +4,7 @@ import traceback
 import sys
 
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
+from OpenOrchestrator.database.queues import QueueElement
 
 from robot_framework import initialize
 from robot_framework import reset
@@ -22,12 +23,31 @@ def main():
 
     error_email = orchestrator_connection.get_constant(config.ERROR_EMAIL).value
 
+    task_count = 0
     error_count = 0
     for _ in range(config.MAX_RETRY_COUNT):
         try:
             reset.reset(orchestrator_connection)
-            process.process(orchestrator_connection)
-            break
+
+            while task_count < config.MAX_TASK_COUNT:
+                queue_elements: list[QueueElement] = []
+
+                # Get up to 6 new queue elements
+                for _ in range(config.THREAD_COUNT):
+                    qe = orchestrator_connection.get_next_queue_element(config.QUEUE_NAME)
+                    if qe is None:
+                        break
+                    queue_elements.append(qe)
+                    task_count += 1
+
+                # Stop if no more queue elements
+                if len(queue_elements) == 0:
+                    orchestrator_connection.log_info("No more queue elements.")
+                    break
+
+                process.process(orchestrator_connection, queue_elements)
+            else:
+                orchestrator_connection.log_info("Limit reached. Stopping for now.")
 
         # If any business rules are broken the robot should stop entirely.
         except BusinessError as error:

@@ -11,3 +11,8 @@ SCREENSHOT_SENDER = "robot@friend.dk"
 # Constant names
 ERROR_EMAIL = "Error Email"
 SAP_CREDENTIAL = "Mathias SAP"
+
+MAX_TASK_COUNT = 600
+QUEUE_NAME = "Masseoprettelse-af-journalnotat-i-KMD-Opus-Debitor"
+
+THREAD_COUNT = 6
