@@ -25,10 +25,12 @@ def main():
 
     task_count = 0
     error_count = 0
+    # Retry loop
     for _ in range(config.MAX_RETRY_COUNT):
         try:
             reset.reset(orchestrator_connection)
 
+            # Queue loop
             while task_count < config.MAX_TASK_COUNT:
                 queue_elements: list[QueueElement] = []
 
@@ -43,18 +45,19 @@ def main():
                 # Stop if no more queue elements
                 if len(queue_elements) == 0:
                     orchestrator_connection.log_info("No more queue elements.")
-                    break  # TODO: Break outer loop
+                    break  # break queue loop
 
                 process.process(orchestrator_connection, queue_elements)
             else:
                 orchestrator_connection.log_info("Limit reached. Stopping for now.")
-                break
+
+            break  # Break retry loop
 
         # If any business rules are broken the robot should stop entirely.
         except BusinessError as error:
             orchestrator_connection.log_error(f"BusinessError: {error}\nTrace: {traceback.format_exc()}")
             error_screenshot.send_error_screenshot(error_email, error, orchestrator_connection.process_name)
-            break
+            break  # Break retry loop
 
         # We actually want to catch all exceptions possible here.
         # pylint: disable-next = broad-exception-caught
