@@ -72,7 +72,7 @@ def main():
     reset.kill_all(orchestrator_connection)
 
     if error_count == config.MAX_RETRY_COUNT:
-        raise RuntimeError("The process failed too many times.")
+        raise RuntimeError(f"The process failed too many times: {error_count}.")
 
 
 def log_exception(orchestrator_connection: OrchestratorConnection) -> callable:
