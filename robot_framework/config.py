@@ -10,7 +10,7 @@ SCREENSHOT_SENDER = "robot@friend.dk"
 
 # Constant names
 ERROR_EMAIL = "Error Email"
-SAP_CREDENTIAL = "Mathias SAP"
+SAP_CREDENTIAL = "SAP Masseoprettelse i SAP"
 
 MAX_TASK_COUNT = 600  # Limits the number of queue elements to process per run.
 QUEUE_NAME = "Masseoprettelse-af-journalnotat-i-KMD-Opus-Debitor"
